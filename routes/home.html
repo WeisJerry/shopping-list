@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Grocery List</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /*Allow for cellphones to display correctly*/
+    @media screen and (max-width: 600px) {
+      .topnav a {
+        width: 100%;
+      }
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+    }
+
+    /* Style the header */
+    .header {
+      background-color: rgb(81, 122, 170);
+      padding: 4px;
+      text-align: center;
+      font-size: 24px;
+      color: white;
+    }
+
+    /* Style the topnav links */
+    .topnav {
+      overflow: hidden;
+      background-color: rgb(60, 70, 130);
+      width: 100%;
+    }
+
+    .topnav a {
+      float: left;
+      display: block;
+      background-color: rgb(60, 70, 130);
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Change color on hover */
+    .topnav a:hover {
+      background-color: rgb(143, 152, 202);
+    }
+
+    /* Style the content */
+    .content {
+      background-color: #f1f1f1;
+      padding: 10px;
+    }
+
+    /* Style the footer */
+    .footer {
+      background-color: #777;
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+
+    /* Table styling for displaying lists */
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 3px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+
+  <script src='javascripts/grocerymain.js'>
+  </script>
+</head>
+
+<body>
+
+
+  <div class="header">
+    <h2><p id="pagetitle">Weis Grocery List</p></h2>
+  </div>
+
+  <!-- Navigation toolbar-->
+  <div class="topnav">
+    <a href="#" onclick="showList('groceries');">View List</a>
+    <a href="#" onclick="showList('edit');">Add & Remove Items</a>
+    <a href="#" onclick="showList('manage');">Manage List</a>
+    <a href="help.html" target = "_blank">Help</a>
+  </div>
+
+  <div id="content" class="content">
+    Select an option from the menu above.
+  </div>
+</body>
+
+</html>

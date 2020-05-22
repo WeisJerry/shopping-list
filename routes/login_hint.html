@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weis Grocery List Login</title>
+	<style>
+		/*Allow for cellphones to display correctly*/
+		@media screen and (max-width: 600px) {
+			.login-form {
+				width: 100%;
+			}
+		}
+
+		.login-form {
+			width: 300px;
+			margin: 0 auto;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.login-form h1 {
+			text-align: center;
+			color: rgb(81, 122, 170);
+			font-size: 18px;
+			padding: 10px 10px 10px 10px;
+		}
+
+		.login-form input[type="password"],
+		.login-form input[type="text"] {
+			width: 100%;
+			padding: 15px;
+			border: 1px solid #dddddd;
+			margin-bottom: 15px;
+			box-sizing: border-box;
+		}
+
+		.login-form input[type="submit"] {
+			width: 100%;
+			padding: 15px;
+			background-color: rgb(81, 122, 170);
+			border: 0;
+			box-sizing: border-box;
+			cursor: pointer;
+			font-weight: bold;
+			font-size: 16px;
+			color: #000000;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="login-form">
+		<h1>Weis Grocery List Login</h1>
+		<form action="auth" method="POST">
+			<input type="text" name="username" placeholder="Username" required>
+			<input type="password" name="password" placeholder="Password" required>
+			<input type="submit">
+		</form>
+		Hint:
