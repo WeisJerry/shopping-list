@@ -118,7 +118,7 @@ router.get('/', function (req, res) {
                 });
                 client.query("commit", function (err) {
                     if (err) {
-                        client.rollback(function () {
+                        client.query("rollback", function () {
                             utils.logError(modulename, "commit", err);
                             throw err;
                         });
