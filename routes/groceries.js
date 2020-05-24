@@ -3,86 +3,69 @@
  */
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var session = require('express-session');
 
 var utils = require('./utils');
 var modulename = "groceries.js";
 
 router.get('/', function (req, res) {
-    var pagecontent = "Error getting database content";
-    console.log('In custom get function.');
-    var con = mysql.createConnection({ host: "localhost", user: "root", password: "ZinDaffies4u" });
-    con.connect(function (err) {
+    var client = utils.getDBClient();
+
+    var querystring = "Select Groceries.GROCERYNAME, Selections.UserName, Selections.QUANTITY, ";
+    querystring += "Categories.CategoryID, Categories.CATEGORYNAME ";
+    querystring += "from Groceries ";
+    querystring += "Inner Join Selections ";
+    querystring += "on Groceries.GroceryID = Selections.GroceryID ";
+    querystring += "Inner Join Categories ";
+    querystring += "on Groceries.CategoryID = Categories.CategoryID ";
+    querystring += "where QUANTITY > 0 "
+    querystring += " And Groceries.UserName='";
+    querystring += session.username;
+    querystring += "'";
+    querystring += " And Categories.UserName='";
+    querystring += session.username;
+    querystring += "'";
+    querystring += " And Selections.UserName='";
+    querystring += session.username;
+    querystring += "'";
+
+    querystring += " order by Groceries.CategoryID";
+
+    client.query(querystring, function (err, result) {
         if (err) {
-            utils.logError(modulename,"createconnection",err);
+            utils.logError(modulename, "selectgroceries", err);
             throw err;
         }
-        console.log("Connected To Database manager.");
-        con.query("USE groceries", function (err, result) {
-            if (err) {
-                utils.logError(modulename,"usegroceries",err);
-                throw err;
-            }
-        });
-        
-        var buffer = "";
-        var querystring = "Select Groceries.GROCERYNAME, Selections.UserName, Selections.QUANTITY, ";
-        querystring += "Categories.CategoryID, Categories.CATEGORYNAME "; 
-        querystring += "from Groceries "; 
-        querystring += "Inner Join Selections ";
-        querystring += "on Groceries.GroceryID = Selections.GroceryID ";
-        querystring += "Inner Join Categories ";
-        querystring += "on Groceries.CategoryID = Categories.CategoryID ";
-        querystring += "where QUANTITY > 0 "
-        querystring += " And Groceries.UserName='";
-        querystring += session.username;
-        querystring += "'";
-        querystring += " And Categories.UserName='";
-        querystring += session.username;
-        querystring += "'";
-        querystring += " And Selections.UserName='";
-        querystring += session.username;
-        querystring += "'";
-        
-        querystring += " order by Groceries.CategoryID";
+        var categorystring = "";
+        var buffer = "There are no items in your shopping list.";
 
-        con.query(querystring, function (err, result, fields) {
-            if (err) {
-                utils.logError(modulename,"selectgroceries",err);
-                throw err;
-            }
-            var categorystring = "";
-            buffer += "<table>";
 
+        if (result.rows.length > 0) {
+            buffer = "<table>";
             //loop through the categories, and get the groceries for each category
-            Object.keys(result).forEach(function (key) 
-            {
-                var row = result[key];
+            Object.keys(result.rows).forEach(function (key) {
+                var row = result.rows[key];
 
-                if (categorystring == "" || categorystring != row.CATEGORYNAME)
-                {
+                if (categorystring == "" || categorystring != row.categoryname) {
                     buffer += "<tr><td>";
                     buffer += "<strong>";
-                    buffer += row.CATEGORYNAME;
+                    buffer += row.categoryname;
                     buffer += "</strong>";
                     buffer += "</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-                    categorystring = row.CATEGORYNAME;
+                    categorystring = row.categoryname;
                 }
                 buffer += "<tr><td>";
-                buffer += row.GROCERYNAME;
+                buffer += row.groceryname;
                 buffer += "</td><td>";
-                buffer += row.QUANTITY;
+                buffer += row.quantity;
                 buffer += "</td><td><input type='checkbox'></td>";
                 buffer += "</tr>";
             });
             buffer += "</table>";
-            res.send(buffer);
-        });
-
-    con.end();
-
+        }
+        res.send(buffer);
     });
+
 });
 
 module.exports = router;
