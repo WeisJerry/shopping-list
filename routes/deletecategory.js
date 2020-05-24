@@ -2,98 +2,82 @@
  * remove a category.
  */
 
-
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var session = require('express-session');
 
 var utils = require('./utils');
 var modulename = "deletecategory.js";
 
 router.post('/', function (req, res) {
-    console.log('In custom post function.');
-    var con = mysql.createConnection({ host: "localhost", user: "root", password: "ZinDaffies4u" });
-    con.connect(function (err) {
+    var client = utils.getDBClient();
+
+    /* Begin transaction */
+    client.query("begin", function (err) {
         if (err) {
-            utils.logError(modulename, "createconnection", err);
+            utils.logError(modulename, "begintransaction", err);
             throw err;
         }
 
-        con.query("USE groceries", function (err, result) {
-            if (err) {
-                utils.logError(modulename, "usegroceries", err);
-                throw err;
-            }
-        });
+        var querystring = "Delete from Selections ";
+        querystring += " Where categoryID=";
+        querystring += req.body.categoryid;
+        querystring += " And UserName='";
+        querystring += session.username;
+        querystring += "'";
 
-        /* Begin transaction */
-        con.beginTransaction(function (err) {
+        client.query(querystring, function (err, result) {
             if (err) {
-                utils.logError(modulename, "begintransaction", err);
-                throw err;
+                client.query("rollback", function () {
+                    utils.logError(modulename, "deletefromselections", err);
+                    throw err;
+                });
             }
 
-            var querystring = "Delete from Selections ";
-            querystring += " Where categoryID=";
+            querystring = "Delete from Groceries ";
+            querystring += "Where categoryID=";
             querystring += req.body.categoryid;
             querystring += " And UserName='";
             querystring += session.username;
             querystring += "'";
 
-            con.query(querystring, function (err, result) {
+            client.query(querystring, function (err, result) {
                 if (err) {
-                    con.rollback(function () {
-                        utils.logError(modulename, "deletefromselections", err);
+                    client.query("rollback", function () {
+                        utils.logError(modulename, "deletefromgroceries", err);
                         throw err;
                     });
                 }
 
-                querystring = "Delete from Groceries ";
+                querystring = "Delete from Categories ";
                 querystring += "Where categoryID=";
                 querystring += req.body.categoryid;
                 querystring += " And UserName='";
                 querystring += session.username;
                 querystring += "'";
 
-                con.query(querystring, function (err, result) {
+                client.query(querystring, function (err, result) {
                     if (err) {
-                        con.rollback(function () {
-                            utils.logError(modulename, "deletefromgroceries", err);
+                        client.query("rollback", function () {
+                            utils.logError(modulename, "deletefromcategories", err);
                             throw err;
                         });
                     }
-
-                    querystring = "Delete from Categories ";
-                    querystring += "Where categoryID=";
-                    querystring += req.body.categoryid;
-                    querystring += " And UserName='";
-                    querystring += session.username;
-                    querystring += "'";
-
-                    con.query(querystring, function (err, result) {
+                    client.query("commit", function (err) {
                         if (err) {
-                            con.rollback(function () {
-                                utils.logError(modulename, "deletefromcategories", err);
+                            client.query("rollback", function () {
+                                utils.logError(modulename, "commit", err);
                                 throw err;
                             });
                         }
-                        con.commit(function (err) {
-                            if (err) {
-                                con.rollback(function () {
-                                    utils.logError(modulename, "commit", err);
-                                    throw err;
-                                });
-                            }
-                            res.send("Ok");
-                            con.end();
-                        });
+                        res.send("Ok");
                     });
                 });
             });
         });
-        /* End transaction */
     });
+    /* End transaction */
+
 });
 
 module.exports = router;

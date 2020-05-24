@@ -11,78 +11,66 @@ var utils = require('./utils');
 var modulename = "restart.js";
 
 router.post('/', function (req, res) {
-    var con = mysql.createConnection({ host: "localhost", user: "root", password: "ZinDaffies4u" });
-    con.connect(function (err) {
+    var client = utils.getDBClient();
+
+    /* Begin transaction */
+    client.query("begin", function (err) {
         if (err) {
-            utils.logError(modulename, "createconnection", err);
+            utils.logError(modulename, "begintransaction", err);
             throw err;
         }
-
-        con.query("USE groceries", function (err, result) {
+        var querystring = "Delete from Selections Where UserName='";
+        querystring += session.username;
+        querystring += "'";
+        client.query(querystring, function (err, result) {
             if (err) {
-                utils.logError(modulename, "usegroceries", err);
-                throw err;
+                client.query("rollback", function () {
+                    console.log("Bad query:" + querystring);
+                    utils.logError(modulename, "deletefromselections", err);
+                    throw err;
+                });
             }
-        });
 
-        /* Begin transaction */
-        con.beginTransaction(function (err) {
-            if (err) {
-                utils.logError(modulename, "begintransaction", err);
-                throw err;
-            }
-            var querystring = "Delete from Selections Where UserName='";
+            querystring = "Delete from Groceries Where UserName='";
             querystring += session.username;
             querystring += "'";
-            con.query(querystring, function (err, result, fields) {
+            client.query(querystring, function (err, result) {
                 if (err) {
-                    con.rollback(function () {
+                    client.query("rollback", function () {
                         console.log("Bad query:" + querystring);
-                        utils.logError(modulename, "deletefromselections", err);
+                        utils.logError(modulename, "deletefromgroceries", err);
                         throw err;
                     });
                 }
 
-                querystring = "Delete from Groceries Where UserName='";
+                querystring = "Delete from Categories Where UserName='";
                 querystring += session.username;
                 querystring += "'";
-                con.query(querystring, function (err, result, fields) {
+                client.query(querystring, function (err, result) {
                     if (err) {
-                        con.rollback(function () {
+                        client.query("rollback", function () {
                             console.log("Bad query:" + querystring);
-                            utils.logError(modulename, "deletefromgroceries", err);
+                            utils.logError(modulename, "deletefromcategories", err);
                             throw err;
                         });
                     }
 
-                    querystring = "Delete from Categories Where UserName='";
-                    querystring += session.username;
-                    querystring += "'";
-                    con.query(querystring, function (err, result, fields) {
+                    client.query("commit", function (err) {
                         if (err) {
-                            con.rollback(function () {
-                                console.log("Bad query:" + querystring);
-                                utils.logError(modulename, "deletefromcategories", err);
+                            client.query("rollback", function () {
+                                utils.logError(modulename, "commit", err);
                                 throw err;
                             });
                         }
+                        console.log('Restart Complete.');
+                        res.send("Ok");
 
-                        con.commit(function (err) {
-                            if (err) {
-                                con.rollback(function () {
-                                    utils.logError(modulename, "commit", err);
-                                    throw err;
-                                });
-                            }
-                            console.log('Transaction Complete.');
-                            res.send("Ok");
-                            con.end();
-                        });
                     });
                 });
             });
         });
     });
 });
+
 
 module.exports = router;

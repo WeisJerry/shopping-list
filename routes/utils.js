@@ -2,34 +2,42 @@
  * Utility Functions
  */
 
-var mysql = require('mysql');
 var crypt = require('crypto');
 var algorithm = 'aes-256-ctr';
-var password = 'oicu812';
+var pwd = 'oicu812';
 
+const { Client } = require('pg');
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'groceries',
+    password: 'not4U2no',
+    port: 5432,
+});
+client.connect();
 
-module.exports = {
-    logError: function (modulename, segment, err) {
-        var errTxt = "ERROR: ";
-        console.log(errTxt + "An unrecoverable error occurred.");
-        console.log(errTxt + "module-" + modulename);
-        console.log(errTxt + "segment-" + segment);
-        console.log(errTxt + err.name);
-        console.log(errTxt + err.stack);
-    },
+module.exports.getDBClient = function () {
+    return client;
+}
 
-    encrypt: function (text) {
-        var cipher = crypt.createCipher(algorithm, password);
-        var crypted = cipher.update(text, 'utf8', 'hex');
-        crypted += cipher.final('hex');
-        return crypted;
-    },
+module.exports.logError = function logError(modulename, segment, err) {
+    var errTxt = "ERROR: ";
+    console.error(errTxt + "An unrecoverable error occurred.");
+    console.error(errTxt + "module-" + modulename);
+    console.error(errTxt + "segment-" + segment);
+    console.error(errTxt + err.stack);
+}
 
-    decrypt: function (text) {
-        var decipher = crypt.createDecipher(algorithm, password)
-        var dec = decipher.update(text, 'hex', 'utf8')
-        dec += decipher.final('utf8');
-        return dec;
-    },
+module.exports.encrypt = function encrypt(text) {
+    var cipher = crypt.createCipher(algorithm, pwd);
+    var crypted = cipher.update(text, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    return crypted;
+}
 
-};
+module.exports.decrypt = function decrypt(text) {
+    var decipher = crypt.createDecipher(algorithm, pwd)
+    var dec = decipher.update(text, 'hex', 'utf8')
+    dec += decipher.final('utf8');
+    return dec;
+}
