@@ -16,7 +16,12 @@ const { Client } = require('pg');
     port: 5432,
 });*/
 //for heroku server
-const client = new Client();
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
 
 client.connect();
