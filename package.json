@@ -9,6 +9,7 @@
     "@mysql/xdevapi": "8.0.20",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
     "helmet": "^3.22.0",
