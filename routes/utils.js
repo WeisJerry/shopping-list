@@ -1,28 +1,23 @@
 /**
  * Utility Functions
  */
-
+require('dotenv').config();
 var crypt = require('crypto');
 var algorithm = 'aes-256-ctr';
 var pwd = 'oicu812';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+
 const { Client } = require('pg');
 //for local development
-/*const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'groceries',
-    password: 'not4U2no',
-    port: 5432,
-});*/
-//for heroku server
+
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false
+        rejectUnauthorized: false,
     }
-  });
-
+});
 
 client.connect();
 
