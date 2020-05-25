@@ -7,13 +7,18 @@ var algorithm = 'aes-256-ctr';
 var pwd = 'oicu812';
 
 const { Client } = require('pg');
-const client = new Client({
+//for local development
+/*const client = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'groceries',
     password: 'not4U2no',
     port: 5432,
-});
+});*/
+//for heroku server
+const client = new Client();
+
+
 client.connect();
 
 module.exports.getDBClient = function () {
