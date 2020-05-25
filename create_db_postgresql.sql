@@ -1,3 +1,16 @@
+/* Remote postgresql db name: postgresql-concave-00665 
+
+command sequence:
+
+heroku login
+heroku pg:psql postgresql-concave-00665 --app weis-grocerylist
+(navigate to sql script directory)
+cat create_db_postgresql.sql | heroku pg:psql postgresql-concave-00665 --app weis-grocerylist
+
+*/
+
+CREATE DATABASE groceries; /*not needed for heroku */
+
 CREATE TABLE Categories (
     UserName varchar(100) NOT NULL,
     CategoryID SERIAL PRIMARY KEY,
@@ -27,3 +40,6 @@ CREATE TABLE users(
     PASSWORD varchar(255) NOT NULL,
     HINT varchar(100)
 );
+
+INSERT INTO users(USERNAME,PASSWORD,HINT) 
+    VALUES('weis','32c7cb8f31f4740255594e899ba9c7','Old address');
