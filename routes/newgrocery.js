@@ -1,5 +1,5 @@
 /**
- * Create a new grocery.
+ * Create a new grocery for a user, if it does not exist.
  */
 
 var express = require('express');

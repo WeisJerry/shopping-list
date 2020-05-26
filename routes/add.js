@@ -1,5 +1,5 @@
 /**
- * Increment a specified grocery.
+ * Increment a specified groceryID for a user.
  */
 
 var express = require('express');

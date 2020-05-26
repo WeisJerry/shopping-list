@@ -1,5 +1,5 @@
 /**
- * Grocery List Functions
+ * Display groceries
  */
 var express = require('express');
 var router = express.Router();
@@ -58,6 +58,9 @@ router.get('/', function (req, res) {
                 buffer += row.groceryname;
                 buffer += "</td><td>";
                 buffer += row.quantity;
+                //empty checkbox as a convenience for checking off items
+                //TODO: Have program 'remember' what is checked,
+                // and button to clear outchecks.
                 buffer += "</td><td><input type='checkbox'></td>";
                 buffer += "</tr>";
             });

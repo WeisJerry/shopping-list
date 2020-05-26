@@ -1,5 +1,5 @@
 /**
- * Add a new category.
+ * Add a new category of grocery for a user.
  */
 
 var express = require('express');

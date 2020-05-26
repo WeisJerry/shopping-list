@@ -1,9 +1,0 @@
-//Use the following at the end of manage.js to add new user functionality.
-                    //space
-                    buffer += "<tr><td>&nbsp;</td>";
-                    buffer += "<td>&nbsp;</td></tr>";
-                    //button to add user account
-                    buffer += "<tr><td>";
-                    buffer += "<button type='button' onclick='newUser();'>";
-                    buffer += "Add New User</button></td>";
-                    buffer += "<td>&nbsp;</td></tr></table>";

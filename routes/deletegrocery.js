@@ -1,5 +1,5 @@
 /**
- * remove a specified grocery.
+ * remove a specified grocery for a user.
  */
 
 var express = require('express');

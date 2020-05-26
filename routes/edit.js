@@ -1,5 +1,6 @@
 /**
- * Grocery List  Edit Functions
+ * Grocery List  Edit Screen
+ * (Add/remove groceries from list)
  */
 
 var express = require('express');
@@ -57,10 +58,10 @@ router.get('/', function (req, res) {
             buffer += "</td><td>";
             buffer += row.quantity;
             buffer += "</td>";
-            buffer += "<td><button type='button' onclick='add(";
+            buffer += "<td><button class='small-button' type='button' onclick='add(";
             buffer += row.groceryid;
             buffer += ");'>+</button>";
-            buffer += "&nbsp;<button type='button' onclick='remove(";
+            buffer += "&nbsp;<button class='small-button' type='button' onclick='remove(";
             buffer += row.groceryid;
             buffer += ");'>-</button>";
             buffer += "</td></tr>";

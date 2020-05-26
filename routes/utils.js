@@ -6,12 +6,9 @@ var crypt = require('crypto');
 var algorithm = 'aes-256-ctr';
 var pwd = 'oicu812';
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-
+//The one and only DB connection client
+//TODO: switch to connection pool
 const { Client } = require('pg');
-//for local development
-
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -19,12 +16,23 @@ const client = new Client({
     }
 });
 
-client.connect();
+client.connect(function (err, result) {
+    if (err) {
+        utils.logError(modulename, "connectClient", err);
+        throw err;
+    }
+});
 
+/**
+ * Retrieve the connected DB client.
+ */
 module.exports.getDBClient = function () {
     return client;
 }
 
+/**
+ * Log an error that occurred and throw it.
+ */
 module.exports.logError = function logError(modulename, segment, err) {
     var errTxt = "ERROR: ";
     console.error(errTxt + "An unrecoverable error occurred.");
@@ -33,6 +41,9 @@ module.exports.logError = function logError(modulename, segment, err) {
     console.error(errTxt + err.stack);
 }
 
+/**
+ * Encrypt a plaintext string
+ */
 module.exports.encrypt = function encrypt(text) {
     var cipher = crypt.createCipher(algorithm, pwd);
     var crypted = cipher.update(text, 'utf8', 'hex');
@@ -40,6 +51,9 @@ module.exports.encrypt = function encrypt(text) {
     return crypted;
 }
 
+/**
+ * Decrypt a string
+ */
 module.exports.decrypt = function decrypt(text) {
     var decipher = crypt.createDecipher(algorithm, pwd)
     var dec = decipher.update(text, 'hex', 'utf8')

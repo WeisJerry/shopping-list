@@ -1,4 +1,6 @@
-//authentication
+/**
+ * Basic authentication
+ */
 
 var express = require('express');
 var router = express.Router();
@@ -36,12 +38,16 @@ router.post('/', function (request, response) {
       hint = result.rows[0].hint;
       success = true;
     }
+
+    //If username and password are valid
     if (success == true && password == pwdFromDB) {
       console.log("User " + username + " logged in successfully");
       session.loggedin = true;
       session.username = username;
       response.sendFile(path.join(__dirname, '/home.html'));
-    } else if (success == true) {
+    } 
+    //If username is valid, but not password, show hint.
+    else if (success == true) {
       //need to show hint
       session.loggedin = false;
       fs.readFile('./routes/login_hint.html', function (err, html) {
@@ -49,12 +55,12 @@ router.post('/', function (request, response) {
           utils.logError(modulename, "createloginwithhint", err);
           throw err;
         }
-
         html += hint;
         html += "</div></body></html>";
         response.send(html);
       });
     }
+    //Login credentials were completely wrong
     else {
       session.loggedin = false;
       response.sendFile(path.join(__dirname, '/login.html'));

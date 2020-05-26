@@ -1,5 +1,6 @@
 /**
- * remove a category.
+ * Remove a category of grocery for a user.
+ * (Also deletes all groceries under that category)
  */
 
 var express = require('express');
