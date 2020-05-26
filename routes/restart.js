@@ -1,5 +1,5 @@
 /**
- * Restart list. (Requires use of recreate_db stored procedure)
+ * Clear out the groceries and categories for a particular user.
  */
 
 var express = require('express');

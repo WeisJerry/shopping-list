@@ -86,12 +86,10 @@ app.get('/home', function(request, response) {
   console.log('In /home handler');
 if (session.loggedin)
   {
-    console.log(path.join(__dirname + '/routes/home.html'));
     response.redirect(path.join(__dirname + '/routes/home.html'));
   }
   else
   {
-    console.log(path.join(__dirname + '/routes/login.html'));
     response.redirect(path.join(__dirname + '/routes/login.html'));
   }
 });

@@ -1,5 +1,5 @@
 /**
- * Grocery List Manage Functions
+ * Grocery List Manage Screen
  */
 var express = require('express');
 var router = express.Router();
@@ -8,6 +8,9 @@ var session = require('express-session');
 
 var utils = require('./utils');
 var modulename = "manage.js";
+
+//TODO: Currently, user is case-sensitive. User 'smith' and 'Smith'
+// are regarded as valid users, but get different shopping databases.
 
 router.get('/', function (req, res) {
     var client = utils.getDBClient();
@@ -58,10 +61,10 @@ router.get('/', function (req, res) {
                     buffer += "</strong>";
                     buffer += "</td>";
                     buffer += "<td>";
-                    buffer += "<button type='button' onclick='deleteCategory(";
+                    buffer += "<button type='button' class='button' onclick='deleteCategory(";
                     buffer += row.categoryid;
                     buffer += ");'>Remove</button>";
-                    buffer += "&nbsp;<button type='button' onclick='newGrocery(";
+                    buffer += "&nbsp;<button type='button' class='button' onclick='newGrocery(";
                     buffer += row.categoryid;
                     buffer += ");'>New Grocery</button>";
                     buffer += "</td></tr>";
@@ -71,7 +74,7 @@ router.get('/', function (req, res) {
                 buffer += "<tr><td>";
                 buffer += row.groceryname;
                 buffer += "</td><td>";
-                buffer += "<button type='button' onclick='deleteGrocery(";
+                buffer += "<button type='button' class='button' onclick='deleteGrocery(";
                 buffer += row.groceryid;
                 buffer += ");'>Remove</button>";
                 buffer += "</td></tr>";
@@ -105,10 +108,10 @@ router.get('/', function (req, res) {
                         buffer += "</strong>";
                         buffer += "</td>";
                         buffer += "<td>";
-                        buffer += "<button type='button' onclick='deleteCategory(";
+                        buffer += "<button class='button' type='button' onclick='deleteCategory(";
                         buffer += catrow.categoryid;
                         buffer += ");'>Remove</button>";
-                        buffer += "&nbsp;<button type='button' onclick='newGrocery(";
+                        buffer += "&nbsp;<button class='button' type='button' onclick='newGrocery(";
                         buffer += catrow.categoryid;
                         buffer += ");'>New Grocery</button>";
                         buffer += "</td></tr>";
@@ -126,14 +129,15 @@ router.get('/', function (req, res) {
 
                     //button for new query
                     buffer += "<tr><td>";
-                    buffer += "<button type='button' onclick='newCategory();'>";
+                    buffer += "<button class='button' type='button' onclick='newCategory();'>";
                     buffer += "New Category</button></td>";
                     buffer += "<td>&nbsp;</td></tr>";
                     //button for clear all
                     buffer += "<tr><td>";
-                    buffer += "<button type='button' onclick='restart();'>";
+                    buffer += "<button class='button' type='button' onclick='restart();'>";
                     buffer += "Restart List</button></td>";
-                    buffer += "<td>&nbsp;</td></tr></table>";
+                    buffer += "<td>&nbsp;</td></tr>";
+                    buffer += "</table>";
                     res.send(buffer);
                 });
             });

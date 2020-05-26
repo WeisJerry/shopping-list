@@ -1,4 +1,4 @@
-/* Get the session username */
+/* Get the session username to display */
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
