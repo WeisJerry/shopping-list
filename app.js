@@ -22,8 +22,11 @@ var newcategory = require('./routes/newcategory');
 var restart = require('./routes/restart');
 var auth = require('./routes/auth');
 var username = require('./routes/username');
+var newuser = require('./routes/newuser');
 
 var app = express();
+
+global.__basedir = __dirname;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,6 +56,7 @@ app.use('/restart', restart);
 app.use('/auth', auth);
 app.use('/index', ind);
 app.use('/username', username);
+app.use('/newuser', newuser);
 
 //authentication
 console.log("Setting up authentication...");
@@ -83,14 +87,13 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/home', function(request, response) {
-  console.log('In /home handler');
 if (session.loggedin)
   {
-    response.redirect(path.join(__dirname + '/routes/home.html'));
+    response.redirect(__basedir + '/views/home.html');
   }
   else
   {
-    response.redirect(path.join(__dirname + '/routes/login.html'));
+    response.redirect(__basedir + '/views/login.html');
   }
 });
 

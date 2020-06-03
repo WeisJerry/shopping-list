@@ -4,7 +4,6 @@
 
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var session = require('express-session');
 
 var utils = require('./utils');

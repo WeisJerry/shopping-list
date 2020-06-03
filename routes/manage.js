@@ -97,7 +97,6 @@ router.get('/', function (req, res) {
                         if (value == catrow.categoryname) {
                             found = true;
                         }
-
                     });
 
                     //add categories that have no groceries associated with them
@@ -116,8 +115,6 @@ router.get('/', function (req, res) {
                         buffer += ");'>New Grocery</button>";
                         buffer += "</td></tr>";
                     }
-
-
                 });
                 client.query("commit", function (err) {
                     if (err) {
@@ -127,17 +124,16 @@ router.get('/', function (req, res) {
                         });
                     }
 
-                    //button for new query
-                    buffer += "<tr><td>";
-                    buffer += "<button class='button' type='button' onclick='newCategory();'>";
-                    buffer += "New Category</button></td>";
-                    buffer += "<td>&nbsp;</td></tr>";
-                    //button for clear all
-                    buffer += "<tr><td>";
-                    buffer += "<button class='button' type='button' onclick='restart();'>";
-                    buffer += "Restart List</button></td>";
-                    buffer += "<td>&nbsp;</td></tr>";
                     buffer += "</table>";
+
+                    //button for new query
+                    buffer += "<br>&nbsp;";
+                    buffer += "<button class='button' type='button' onclick='newCategory();'>";
+                    buffer += "New Category</button>";
+                    //button for clear all
+                    buffer += "<br><br>&nbsp;";
+                    buffer += "<button class='button' type='button' onclick='restart();'>";
+                    buffer += "Restart List</button>";
                     res.send(buffer);
                 });
             });

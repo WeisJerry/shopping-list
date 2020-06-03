@@ -20,7 +20,6 @@ router.post('/', function (req, res) {
     querystring += session.username;
     querystring += "'";
 
-
     client.query(querystring, function (err, result) {
         if (err) {
             utils.logError(modulename, "updateselections", err);
@@ -28,8 +27,6 @@ router.post('/', function (req, res) {
         }
         res.send("Ok");
     });
-
-
 });
 
 module.exports = router;
