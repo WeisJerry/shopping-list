@@ -5,7 +5,6 @@
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
-var path = require('path');
 var fs = require('fs');
 
 var utils = require('./utils');
@@ -44,13 +43,13 @@ router.post('/', function (request, response) {
       console.log("User " + username + " logged in successfully");
       session.loggedin = true;
       session.username = username;
-      response.sendFile(path.join(__dirname, '/home.html'));
+      response.sendFile(__basedir + '/views/home.html');
     } 
     //If username is valid, but not password, show hint.
     else if (success == true) {
       //need to show hint
       session.loggedin = false;
-      fs.readFile('./routes/login_hint.html', function (err, html) {
+      fs.readFile('./views/login_hint.html', function (err, html) {
         if (err) {
           utils.logError(modulename, "createloginwithhint", err);
           throw err;
@@ -63,12 +62,10 @@ router.post('/', function (request, response) {
     //Login credentials were completely wrong
     else {
       session.loggedin = false;
-      response.sendFile(path.join(__dirname, '/login.html'));
+      response.sendFile(__basedir + '/views/login.html');
     }
   });
 
 });
-
-
 
 module.exports = router;

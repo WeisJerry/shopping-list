@@ -5,11 +5,12 @@ var session = require('express-session');
 
 router.get('/', function (req, res) {
 
-    var un = "Weis";
+    var user = "Weis";
     if (session.loggedin == true) {
-        un = session.username;
+        user = session.username;
+        user = user.charAt(0).toUpperCase() + user.slice(1);
     }
-    res.send(un);
+    res.send(user);
 });
 
 module.exports = router;

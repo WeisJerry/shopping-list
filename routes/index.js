@@ -8,11 +8,11 @@ router.get('/', function(req, res, next) {
 
   if (req.session != null && req.session.loggedin)
   {
-    res.sendFile(path.join(__dirname, '/home.html'));
+    res.sendFile(__basedir + '/views/home.html');
   }
   else
   {
-    res.sendFile(path.join(__dirname, '/login.html'));
+    res.sendFile(__basedir + '/views/login.html');
   }
 });
 

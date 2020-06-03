@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weis Grocery List Login</title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+	<script src='javascripts/grocerymain.js'></script>
+</head>
+
+<body>
+	<div class="login-form">
+		<h1>Create a New user Account</h1>
+		<form action="newuser" method="POST" onsubmit='return validateNewUser();'>
+			<input type="text" name="newusername" id="newusername" placeholder="Username" required>
+			<input type="password" name="newpassword" id="newpassword" placeholder="Password" required>
+			<input type="password" name="newpasswordconfirm" id="newpasswordconfirm" placeholder="Confirm Password" required>
+			<input type="text" name="hint" id="hint" placeholder="Hint">
+			<input type="submit">
+		</form>
+		
+	</div>
+</body>
+
+</html>

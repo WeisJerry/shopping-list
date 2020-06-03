@@ -29,8 +29,8 @@ function decrypt(text) {
 };
 
 // Manually encrypt/decrypt
-var plainText = "secret";
-var encrypted = encrypt(plaintext);
+var plainText = "oicu812";
+var encrypted = encrypt(plainText);
 console.log("Encrypting password " + plainText);
 console.log("Encrypted value: " + encrypted);
 var decrypted = decrypt(encrypted);

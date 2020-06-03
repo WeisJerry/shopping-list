@@ -16,6 +16,40 @@ function showList(name) {
 }
 
 /**
+ * Validate the entries for a new user.
+ * Verify the username is nonempty, the passwords
+ * are nonempty, match, and are at least 8 characters.
+ */
+function validateNewUser()
+{
+  var success = true;
+  var name = document.getElementById("newusername").value.trim();
+  var pwd1 = document.getElementById("newpassword").value.trim();
+  var pwd2 = document.getElementById("newpasswordconfirm").value.trim();
+
+  if (pwd1 != pwd2) {
+    success = false;
+    alert("The passwords must match.");
+  }
+  else if (pwd1 == "")
+  {
+    success = false;
+    alert("The password fields cannot be empty.");
+  }
+  else if (pwd1.length < 8)
+  {
+    success = false;
+    alert("The password must be at least 8 characters in length.")
+  }
+  else if (name == "")
+  {
+    success = false;
+    alert("The username field cannotbe empty.");
+  }
+  return success;
+}
+
+/**
  * Update the web page title
  */
 function updateTitle() {
@@ -110,7 +144,6 @@ function deleteGrocery(groceryID) {
  * and update the page.
  * 
  * @param {} categoryID 
-
  */
 function deleteCategory(categoryID) {
   var msg = "This will also remove all groceries in this category. Continue?";
