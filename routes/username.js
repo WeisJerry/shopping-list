@@ -5,7 +5,7 @@ var session = require('express-session');
 
 router.get('/', function (req, res) {
 
-    var user = "Weis";
+    var user = "";
     if (session.loggedin == true) {
         user = session.username;
         user = user.charAt(0).toUpperCase() + user.slice(1);

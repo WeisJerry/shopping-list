@@ -20,8 +20,7 @@ function showList(name) {
  * Verify the username is nonempty, the passwords
  * are nonempty, match, and are at least 8 characters.
  */
-function validateNewUser()
-{
+function validateNewUser() {
   var success = true;
   var name = document.getElementById("newusername").value.trim();
   var pwd1 = document.getElementById("newpassword").value.trim();
@@ -31,22 +30,33 @@ function validateNewUser()
     success = false;
     alert("The passwords must match.");
   }
-  else if (pwd1 == "")
-  {
+  else if (pwd1 == "") {
     success = false;
     alert("The password fields cannot be empty.");
   }
-  else if (pwd1.length < 8)
-  {
+  else if (pwd1.length < 8) {
     success = false;
     alert("The password must be at least 8 characters in length.")
   }
-  else if (name == "")
-  {
+  else if (name == "") {
     success = false;
     alert("The username field cannotbe empty.");
   }
   return success;
+}
+
+/**
+ * Log out of website
+ */
+function logout() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.write(this.responseText);
+    }
+  };
+  xhttp.open("GET", "logout", true);
+  xhttp.send();
 }
 
 /**
@@ -58,11 +68,14 @@ function updateTitle() {
     if (this.readyState == 4 && this.status == 200) {
       var name = this.responseText;
       name = name.trim();
-      if (name == "")
-        name = "Weis";
-      name += " Grocery List";
-      document.getElementById("pagetitle").innerHTML =
-        name;
+      if (name == "") { //not logged in
+        window.location.href="login.html";
+      }
+      else {
+        name += " Grocery List";
+        document.getElementById("pagetitle").innerHTML =
+          name;
+      }
     }
   };
   console.log('Sending GET');

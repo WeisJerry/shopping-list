@@ -23,6 +23,7 @@ var restart = require('./routes/restart');
 var auth = require('./routes/auth');
 var username = require('./routes/username');
 var newuser = require('./routes/newuser');
+var logout = require('./routes/logout');
 
 var app = express();
 
@@ -57,6 +58,7 @@ app.use('/auth', auth);
 app.use('/index', ind);
 app.use('/username', username);
 app.use('/newuser', newuser);
+app.use('/logout', logout);
 
 //authentication
 console.log("Setting up authentication...");
@@ -89,11 +91,11 @@ app.use(function (err, req, res, next) {
 app.get('/home', function(request, response) {
 if (session.loggedin)
   {
-    response.redirect(__basedir + '/views/home.html');
+    response.redirect(__basedir + '/public/home.html');
   }
   else
   {
-    response.redirect(__basedir + '/views/login.html');
+    response.redirect(__basedir + '/public/login.html');
   }
 });
 
