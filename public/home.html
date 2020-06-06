@@ -75,12 +75,12 @@
       border-collapse: collapse;
       width: 100%;
     }
-    
+
     .button {
       width: 110px;
       border-radius: 4px;
       display: inline-block;
-			background-color: rgb(131, 182, 241);
+      background-color: rgb(131, 182, 241);
 
     }
 
@@ -88,7 +88,7 @@
       width: 25px;
       display: inline-block;
       border-radius: 4px;
-			background-color: rgb(131, 182, 241);
+      background-color: rgb(131, 182, 241);
     }
 
     td {
@@ -104,13 +104,20 @@
 
   <script src='javascripts/grocerymain.js'>
   </script>
+  <script>
+    /* Run the following on page startup*/
+    updateTitle();
+
+  </script>
 </head>
 
 <body>
 
 
   <div class="header">
-    <h2><p id="pagetitle">Weis Grocery List</p></h2>
+    <h2>
+      <p id="pagetitle">Weis Grocery List</p>
+    </h2>
   </div>
 
   <!-- Navigation toolbar-->
@@ -118,7 +125,7 @@
     <a href="#" onclick="showList('groceries');">View List</a>
     <a href="#" onclick="showList('edit');">Add & Remove Items</a>
     <a href="#" onclick="showList('manage');">Manage List</a>
-    <a href="help.html" target = "_blank">Help</a>
+    <a href="help.html" target="_blank">Help</a>
     <a href="#" onclick="logout();">Log out</a>
   </div>
 

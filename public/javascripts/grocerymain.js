@@ -251,10 +251,7 @@ function restart() {
   }
 }
 
-/**
- * Run the following on page startup
- */
-updateTitle();
+
 
 
 
