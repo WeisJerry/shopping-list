@@ -38,8 +38,10 @@ router.get('/', function (req, res) {
         }
         var categorystring = "";
         var buffer = "There are no items in your shopping list.";
-
-
+        if (session.loggedin == false || session.username == "")
+        {
+            buffer = "You are not logged in."
+        }
         if (result.rows.length > 0) {
             buffer = "<table>";
             //loop through the categories, and get the groceries for each category

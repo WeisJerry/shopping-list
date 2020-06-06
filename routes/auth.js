@@ -43,7 +43,7 @@ router.post('/', function (request, response) {
       console.log("User " + username + " logged in successfully");
       session.loggedin = true;
       session.username = username;
-      response.sendFile(__basedir + '/views/home.html');
+      response.sendFile(__basedir + '/public/home.html');
     } 
     //If username is valid, but not password, show hint.
     else if (success == true) {
@@ -62,7 +62,7 @@ router.post('/', function (request, response) {
     //Login credentials were completely wrong
     else {
       session.loggedin = false;
-      response.sendFile(__basedir + '/views/login.html');
+      response.sendFile(__basedir + '/public/login.html');
     }
   });
 

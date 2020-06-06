@@ -49,7 +49,7 @@ router.post('/', function (req, res) {
                     utils.logError(modulename, "insertnewuser", err);
                     throw err;
                 }
-                res.sendFile(__basedir + '/views/login.html');
+                res.sendFile(__basedir + '/public/login.html');
             });
         }
     });

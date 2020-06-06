@@ -38,35 +38,42 @@ router.get('/', function (req, res) {
             utils.logError(modulename, "selectgroceries", err);
             throw err;
         }
+
         var categorystring = "";
-        buffer += "<table>";
+        buffer = "<table>";
 
-        //loop through the categories, and get the groceries for each category
-        Object.keys(result.rows).forEach(function (key) {
-            var row = result.rows[key];
+        if (session.loggedin == false || session.username == "") {
+            buffer = "You are not logged in."
+        }
+        else {
 
-            if (categorystring == "" || categorystring != row.categoryname) {
+            //loop through the categories, and get the groceries for each category
+            Object.keys(result.rows).forEach(function (key) {
+                var row = result.rows[key];
+
+                if (categorystring == "" || categorystring != row.categoryname) {
+                    buffer += "<tr><td>";
+                    buffer += "<strong>";
+                    buffer += row.categoryname;
+                    buffer += "</strong>";
+                    buffer += "</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+                    categorystring = row.categoryname;
+                }
                 buffer += "<tr><td>";
-                buffer += "<strong>";
-                buffer += row.categoryname;
-                buffer += "</strong>";
-                buffer += "</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-                categorystring = row.categoryname;
-            }
-            buffer += "<tr><td>";
-            buffer += row.groceryname;
-            buffer += "</td><td>";
-            buffer += row.quantity;
-            buffer += "</td>";
-            buffer += "<td><button class='small-button' type='button' onclick='add(";
-            buffer += row.groceryid;
-            buffer += ");'>+</button>";
-            buffer += "&nbsp;<button class='small-button' type='button' onclick='remove(";
-            buffer += row.groceryid;
-            buffer += ");'>-</button>";
-            buffer += "</td></tr>";
-        });
-        buffer += "</table>";
+                buffer += row.groceryname;
+                buffer += "</td><td>";
+                buffer += row.quantity;
+                buffer += "</td>";
+                buffer += "<td><button class='small-button' type='button' onclick='add(";
+                buffer += row.groceryid;
+                buffer += ");'>+</button>";
+                buffer += "&nbsp;<button class='small-button' type='button' onclick='remove(";
+                buffer += row.groceryid;
+                buffer += ");'>-</button>";
+                buffer += "</td></tr>";
+            });
+            buffer += "</table>";
+        }
         res.send(buffer);
     });
 
