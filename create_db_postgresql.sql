@@ -1,11 +1,14 @@
 /* Remote postgresql db name: postgresql-concave-00665 
 
-command sequence:
+command sequence: (at command prompt)
 
 heroku login
 heroku pg:psql postgresql-concave-00665 --app weis-grocerylist
 (navigate to sql script directory)
 cat create_db_postgresql.sql | heroku pg:psql postgresql-concave-00665 --app weis-grocerylist
+
+Get current credentials for DB:
+heroku pg:credentials:url postgresql-concave-00665 --app weis-grocerylist
 
 */
 

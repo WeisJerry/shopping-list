@@ -3,30 +3,37 @@
  */
 require('dotenv').config();
 var crypt = require('crypto');
-var algorithm = 'aes-256-ctr';
-var pwd = 'oicu812';
+const encryption_key = 'aGVsbG8gd29ybGQ=Gvv4ql==2gceJer3';
+const algorithm = 'aes-128-ecb';
 
 //The one and only DB connection client
 //TODO: switch to connection pool
 const { Client } = require('pg');
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-});
-
-client.connect(function (err, result) {
-    if (err) {
-        utils.logError(modulename, "connectClient", err);
-        throw err;
-    }
-});
+var client = null;
 
 /**
  * Retrieve the connected DB client.
+ * (Initialize it if it does not exist)
  */
 module.exports.getDBClient = function () {
+    if (client == null) {
+        client = new Client({
+            connectionString: process.env.DATABASE_URL,
+             ssl: {
+                 rejectUnauthorized: false,
+             }
+        });
+
+        client.connect(function (err, result) {
+            if (err) {
+                utils.logError(modulename, "connectClient", err);
+                throw err;
+            }
+            else {
+                console.log("DB Connection initialized");
+            }
+        });
+    }
     return client;
 }
 
@@ -45,18 +52,14 @@ module.exports.logError = function logError(modulename, segment, err) {
  * Encrypt a plaintext string
  */
 module.exports.encrypt = function encrypt(text) {
-    var cipher = crypt.createCipher(algorithm, pwd);
-    var crypted = cipher.update(text, 'utf8', 'hex');
-    crypted += cipher.final('hex');
-    return crypted;
+    var cipher = crypt.createCipher(algorithm, encryption_key);
+    return cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
 }
 
 /**
  * Decrypt a string
  */
 module.exports.decrypt = function decrypt(text) {
-    var decipher = crypt.createDecipher(algorithm, pwd)
-    var dec = decipher.update(text, 'hex', 'utf8')
-    dec += decipher.final('utf8');
-    return dec;
+    var decipher = crypt.createDecipher(algorithm, encryption_key);
+    return decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
 }
