@@ -1,37 +1,29 @@
-/**
- * Run to manually encrypt passwords for initial DB construction and testing.
- */
+const crypto = require('crypto');
+const encryption_key = 'aGVsbG8gd29ybGQ=Gvv4ql==2gceJer3';
+const algorithm = 'aes-128-ecb';
 
-const crypt = require('crypto');
-var algorithm = 'aes-256-ctr';
-var password = 'oicu812';
 
-/**
- * Encrypt a string of text. Returns encrypted string.
- * @param {string} text 
- */
+// An encrypt function 
 function encrypt(text) {
-    var cipher = crypt.createCipher(algorithm, password);
-    var crypted = cipher.update(text, 'utf8', 'hex');
-    crypted += cipher.final('hex');
-    return crypted;
-};
+    var cipher = crypto.createCipher(algorithm, encryption_key);
+    return cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
+}
 
-/**
- * Decrypt a string of text. Returns decrypted string.
- * @param {string} text 
- */
+// A decrypt function 
 function decrypt(text) {
-    var decipher = crypt.createDecipher(algorithm, password)
-    var dec = decipher.update(text, 'hex', 'utf8')
-    dec += decipher.final('utf8');
-    return dec;
-};
+    var decipher = crypto.createDecipher(algorithm, encryption_key);
+    return decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
+}
 
-// Manually encrypt/decrypt
-var plainText = "oicu812";
-var encrypted = encrypt(plainText);
-console.log("Encrypting password " + plainText);
-console.log("Encrypted value: " + encrypted);
-var decrypted = decrypt(encrypted);
-console.log("Decrypted value: " + decrypted);
+var plain = ["aBcdefGhijklmnOpqrstuvwxyz",
+    "1234567890",
+    "!@#$%^&*()_+=-[]|}{,./?><\\\"",
+    "123EFGabc$%^"
+];
+
+var counter;
+for (counter = 0; counter < plain.length; counter++) {
+    var result = encrypt(plain[counter]);
+    console.log("\"" + result + "\",");
+    
+}
