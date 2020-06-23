@@ -53,7 +53,7 @@ module.exports.logError = function logError(modulename, segment, err) {
  */
 module.exports.encrypt = function encrypt(text) {
     var cipher = crypt.createCipher(algorithm, encryption_key);
-    return cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
+    return cipher.update(text, 'utf8', 'base64') + cipher.final('base64');
 }
 
 /**
@@ -61,5 +61,5 @@ module.exports.encrypt = function encrypt(text) {
  */
 module.exports.decrypt = function decrypt(text) {
     var decipher = crypt.createDecipher(algorithm, encryption_key);
-    return decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
+    return decipher.update(text, 'base64', 'utf8') + decipher.final('utf8');
 }
